@@ -22,7 +22,8 @@ https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows
 Once, you have created a GitHub repository. Select it and click on setting. Follows the above screen to create the secret for each environment.
 
 For example
-
+```
 DEV_AWS_ACCESS_KEY_ID
 DEV_AWS_SECRET_ACCESS_KEY
 DEV_AWS_DEFAULT_REGION
+```
