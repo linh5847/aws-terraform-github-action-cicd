@@ -27,6 +27,9 @@ on:
       aws_default_region:
         description: "Specifies the AWS_DEFAULT_REGION."
         required: true
+      terraform_version:
+        description: "Specifies the TERRAFORM_VERSION."
+        required: true
 
 jobs:
   build-plan:
@@ -38,10 +41,13 @@ jobs:
         working-directory: ${{ inputs.path }}
     env:
       ###AZURE Client details###
-      ARM_CLIENT_ID: ${{ secrets.arm_client_id }}
-      ARM_CLIENT_SECRET: ${{ secrets.arm_client_secret }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.arm_subscription_id }}
-      ARM_TENANT_ID: ${{ secrets.arm_tenant_id }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      AWS_DEFAULT_REGION: ${{ secrets.aws_default_region }}
+
+    strategy:
+      matrix:
+        environment: [dev, staging, prod]
 
     steps:
       - name: Checkout
@@ -59,23 +65,40 @@ jobs:
         with:
           sarif_file: tfsec.sarif
 
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.0.0
           terraform_wrapper: false
 
-      - name: Setup Terragrunt
-        uses: autero1/action-terragrunt@v1.1.0
+      # Install the selected version of Terraform CLI 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          terragrunt_version: 0.37.1
+          terraform_version: ${{ secrets.terraform_version }}
 
-      - name: Interact with Terragrunt
-        run: terragrunt --version
-
-      - name: "Terragrunt Init"
-        run: terragrunt run-all init --terragrunt-non-interactive
+      - name: Terraform Init
+        id: init
+        run: terraform init -get=true -input=false -reconfigure
         working-directory: ${{ inputs.path }}
 
-      - name: "Terragrunt Plan"
-        run: terragrunt run-all plan --terragrunt-non-interactive
+      # Run a terraform fmt to check syntax
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -recursive -check -diff
         working-directory: ${{ inputs.path }}
+
+      # Run a terraform validate
+      - name: Terraform Validate
+        id: validate
+        # Run even if formatting fails
+        if: success() || failure()
+        run: terraform validate
+
+      # Run a terraform plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -lock=true -refresh=true -var-file=${{ matrix.environment }}.tfvars

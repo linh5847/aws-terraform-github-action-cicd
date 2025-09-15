@@ -22,3 +22,4 @@ jobs:
       aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
       aws_secret_access_key: ${{ secrets.DEV_ARM_CLIENT_SECRET }} ## AWS_SECRET_ACCESS_KEY
       aws_default_region: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }} ## AWS_DEFAULT_REGION
+      terraform_version: ${{ secrets.TERRAFORM_VERSION }}
