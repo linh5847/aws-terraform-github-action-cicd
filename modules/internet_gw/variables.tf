@@ -1,3 +1,9 @@
+variable "enabled" {
+  description = "specifies whether to create this resource or not"
+  type        = bool
+  default     = false
+}
+
 variable "vpc_id" {
   description = "specifies an AWS VPC-ID"
   type        = string

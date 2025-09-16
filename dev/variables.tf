@@ -16,6 +16,10 @@ variable "config" {
       enabled  = bool
       vpc_name = string
       vpc_cidr = string
+    }),
+    internet_gw = object({
+      enabled          = bool
+      internet_gw_name = string
     })
   })
 }
