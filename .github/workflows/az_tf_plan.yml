@@ -47,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [dev, staging, prod]
+        environment: [dev, stage, prod]
 
     steps:
       - name: Clone repo
