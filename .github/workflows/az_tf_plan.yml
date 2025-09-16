@@ -1,0 +1,100 @@
+### Reusable workflow to plan terraform deployment, create artifact and upload to workflow artifacts for consumption ###
+name: "Build_TF_Plan"
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: "Specifies the path of the root terraform module."
+        required: true
+        type: string
+      gh_environment:
+        description: "Specifies the GitHub deployment environment."
+        required: false
+        type: string
+        default: null
+      enable_TFSEC:
+        description: "(Optional) Enables TFSEC IaC scans and code quality checks on Terraform configurations"
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      aws_access_key_id:
+        description: "Specifies the AWS_ACCESS_KEY_ID."
+        required: true
+      aws_secret_access_key:
+        description: "Specifies the AWS_SECRET_ACCESS_KEY."
+        required: true
+      aws_default_region:
+        description: "Specifies the AWS_DEFAULT_REGION."
+        required: true
+      terraform_version:
+        description: "Specifies the TERRAFORM_VERSION."
+        required: true
+
+jobs:
+  build-plan:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.gh_environment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.path }}
+    env:
+      ###AZURE Client details###
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      AWS_DEFAULT_REGION: ${{ secrets.aws_default_region }}
+
+    strategy:
+      matrix:
+        environment: [dev, staging, prod]
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: tfsec
+        uses: aquasecurity/tfsec-sarif-action@v0.1.0
+        with:
+          sarif_file: tfsec.sarif          
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: tfsec.sarif
+
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install the selected version of Terraform CLI 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.12.2" #${{ secrets.terraform_version }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -get=true -input=false -reconfigure
+        working-directory: ${{ inputs.path }}
+
+      # Run a terraform fmt to check syntax
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -recursive -check -diff
+        working-directory: ${{ inputs.path }}
+
+      # Run a terraform validate
+      - name: Terraform Validate
+        id: validate
+        # Run even if formatting fails
+        if: success() || failure()
+        run: terraform validate
+
+      # Run a terraform plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -lock=true -refresh=true -var-file=${{ matrix.environment }}.tfvars
