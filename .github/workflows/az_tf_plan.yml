@@ -9,7 +9,7 @@ on:
         type: string
       gh_environment:
         description: "Specifies the GitHub deployment environment."
-        required: true
+        required: false
         type: string
         default: null
       enable_TFSEC:
