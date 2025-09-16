@@ -45,7 +45,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: ${{ inputs.path }}
+        environment: [${{ inputs.path }}]
 
     steps:
       - name: Clone repo
