@@ -45,9 +45,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
       AWS_DEFAULT_REGION: ${{ secrets.aws_default_region }}
 
-    strategy:
-      matrix:
-        environment: [dev, stage, prod]
+    # strategy:
+    #   matrix:
+    #     environment: [dev, stage, prod]
 
     steps:
       - name: Clone repo
@@ -97,4 +97,4 @@ jobs:
       # Run a terraform plan
       - name: Terraform Plan
         id: plan
-        run: terraform plan -lock=true -refresh=true -var-file=${{ matrix.environment }}.tfvars
+        run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars
