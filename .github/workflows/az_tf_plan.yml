@@ -9,7 +9,7 @@ on:
         type: string
       gh_environment:
         description: "Specifies the GitHub deployment environment."
-        required: false
+        required: true
         type: string
         default: null
       enable_TFSEC:
@@ -34,7 +34,7 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.gh_environment }}
+    #environment: ${{ inputs.gh_environment }}
     defaults:
       run:
         shell: bash
@@ -47,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [dev, stage, prod]
+        environment: ${{ inputs.gh_environment }} #[dev, stage, prod]
 
     steps:
       - name: Clone repo
