@@ -6,6 +6,11 @@ on:
       - '*'
       - '!main'
 
+strategy:
+  matrix:
+    environment: [dev]
+
+
 env:
   TF_LOG: INFO
   TF_INPUT: false
@@ -18,7 +23,7 @@ jobs:
     defaults:
         run:
           shell: bash
-          working-directory: ./dev
+          working-directory: ${{ matrix.environment }}
 
     steps:
       - name: Clone repo
