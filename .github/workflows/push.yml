@@ -15,7 +15,7 @@ on:
         description: "Specifies the path of the root terraform module."
         required: true
         type: string
-        default: ./dev
+        default: dev
   push:
     branches:
       - '*'
@@ -45,7 +45,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: ${{ inputs.path }}
+        environment: [dev]
 
     steps:
       - name: Clone repo
