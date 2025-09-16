@@ -21,7 +21,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@main # Required a first feature branch git ref
+    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@feature-config # Required a first feature branch git ref
     with:
       path: dev ## Path to terraform root module (Required)
       enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
