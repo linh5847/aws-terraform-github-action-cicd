@@ -78,7 +78,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -get=true -input=false -reconfigure
+        run: terraform init -input=false
         working-directory: ${{ inputs.path }}
 
       # Run a terraform fmt to check syntax

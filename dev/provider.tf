@@ -1,9 +1,10 @@
 terraform {
   backend "s3" {
-    bucket  = "vntechsol"
-    region  = "eu-west-2"
-    encrypt = true
-    key     = "dev/eks/terraform.tfstate"
+    bucket       = "vntechsol"
+    region       = "eu-west-2"
+    use_lockfile = true
+    encrypt      = true
+    key          = "dev/eks/terraform.tfstate"
   }
 
   required_providers {
