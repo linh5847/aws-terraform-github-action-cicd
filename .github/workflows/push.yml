@@ -6,11 +6,6 @@ on:
       - '*'
       - '!main'
 
-strategy:
-  matrix:
-    environment: [dev]
-
-
 env:
   TF_LOG: INFO
   TF_INPUT: false
@@ -18,8 +13,9 @@ env:
 jobs: 
   build-validation:
     runs-on: ubuntu-latest
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    # Set the working directory to vnet for the config files
+    strategy:
+      matrix:
+        environment: [dev]
     defaults:
         run:
           shell: bash
