@@ -1,5 +1,13 @@
-### Reusable workflow to plan terraform deployment, create artifact and upload to workflow artifacts for consumption ###
-name: "Build_TF_Plan"
+#############################################################
+### USER RESPONSIBLE TO CHANGE PATH/DIRECTORY NAME        ###
+### CURRENTLY dev, stage, prod folders                    ###
+###                                                       ###
+### Looks for keyword path.default and change the name to ###
+### one of above ie dev                                   ###
+#############################################################
+
+ 
+name: Push to feature branch
 on:
   workflow_call:
     inputs:
@@ -7,38 +15,28 @@ on:
         description: "Specifies the path of the root terraform module."
         required: true
         type: string
-      gh_environment:
-        description: "Specifies the GitHub deployment environment."
-        required: true
-        type: string
-        default: null
-      enable_TFSEC:
-        description: "(Optional) Enables TFSEC IaC scans and code quality checks on Terraform configurations"
-        required: false
-        type: boolean
-        default: false
-    secrets:
-      aws_access_key_id:
-        description: "Specifies the AWS_ACCESS_KEY_ID."
-        required: true
-      aws_secret_access_key:
-        description: "Specifies the AWS_SECRET_ACCESS_KEY."
-        required: true
-      aws_default_region:
-        description: "Specifies the AWS_DEFAULT_REGION."
-        required: true
-      terraform_version:
-        description: "Specifies the TERRAFORM_VERSION."
-        required: true
+        default: dev
+  push:
+    branches:
+      - '*'
+      - 'develop'
+      - 'stage'
+      - '!main'
 
-jobs:
-  build-plan:
+env:
+  TF_LOG: INFO
+  TF_INPUT: false
+
+jobs: 
+  check-code:
     runs-on: ubuntu-latest
-    #environment: ${{ inputs.gh_environment }}
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    # Set the working directory to vnet for the config files
     defaults:
-      run:
-        shell: bash
-        working-directory: ${{ inputs.path }}
+        run:
+          shell: bash
+          working-directory: ${{ inputs.path }}
+
     env:
       ###AZURE Client details###
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
@@ -47,7 +45,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [dev, stage, prod]
+        environment: ${{ inputs.path }}
 
     steps:
       - name: Clone repo
@@ -74,7 +72,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.12.2" #${{ secrets.terraform_version }}
+          terraform_version: "1.12.2"
 
       - name: Terraform Init
         id: init
