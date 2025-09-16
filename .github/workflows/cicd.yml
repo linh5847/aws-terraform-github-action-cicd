@@ -1,0 +1,68 @@
+stages:
+  - environments
+
+.environment:
+  stage: environments
+  variables:
+    TF_ROOT: $environment/eks
+    TF_STATE_NAME: $environment
+    TF_CLI_ARGS_plan: "-var-file=../../vars/$environment.tfvars"
+  trigger:
+    include:
+      - local: 'az_tf_plan.yml'
+    strategy: depend 
+    forward:
+      yaml_variables: true
+      pipeline_variables: true
+
+development:
+  extends: .environment
+  variables:
+    environment: development
+    TF_DESTROY_STAGE: "true"
+    TF_AUTO_DEPLOY: "false"
+    AWS_ACCESS_KEY_ID: ${DEVELOPMENT_AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${DEVELOPMENT_AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: ${DEVELOPMENT_AWS_DEFAULT_REGION}
+    IGNORE_TF_DEPRECATION_WARNING: true
+  # rules:
+  #   - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ "/^features/*" || $CI_COMMIT_BRANCH == "development"
+
+sit:
+  extends: .environment
+  variables:
+    environment: sit
+    TF_DESTROY_STAGE: "true"
+    TF_AUTO_DEPLOY: "false"
+    AWS_ACCESS_KEY_ID: ${SIT_AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${SIT_AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: ${SIT_AWS_DEFAULT_REGION}
+    IGNORE_TF_DEPRECATION_WARNING: true
+  # rules:
+  #   - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ "/^features/*" || $CI_COMMIT_BRANCH == "sit"
+
+staging:
+  extends: .environment
+  variables:
+    environment: staging
+    TF_DESTROY_STAGE: "true"
+    TF_AUTO_DEPLOY: "false"
+    AWS_ACCESS_KEY_ID: ${STAGING_AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${STAGING_AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: ${STAGING_AWS_DEFAULT_REGION}
+    IGNORE_TF_DEPRECATION_WARNING: true
+  # rules:
+  #   - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ "/^features/*" || $CI_COMMIT_BRANCH == "staging"
+
+production:
+  extends: .environment
+  variables:
+    environment: production
+    TF_DESTROY_STAGE: "true"
+    TF_AUTO_DEPLOY: "false"
+    AWS_ACCESS_KEY_ID: ${PRODUCTION_AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: ${PRODUCTION_AWS_DEFAULT_REGION}
+    IGNORE_TF_DEPRECATION_WARNING: true
+  # rules:
+  #   - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ "/^features/*" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
