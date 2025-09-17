@@ -11,15 +11,18 @@ on:
   push:
     branches:
       - '*'
-      - develop
-      - stage
-      - main
+      - '!develop'
+      - '!stage'
+      - '!main'
     
   pull_request:
     branches:
       - develop
       - stage
       - main
+
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   validate-build:
@@ -38,7 +41,8 @@ jobs:
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
   deploy:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
+    if: github.event.review.state == 'approved'
     needs: validate-build
     uses: ./.github/workflows/az_tf_apply.yml
     with:
