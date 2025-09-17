@@ -59,4 +59,4 @@ jobs:
       # Terraform apply
       - name: Terraform Apply
         id: Apply
-        run: terraform apply -auto-approve -lock=true -refresh=true -var-file${{ inouts.path }}.tfvars plan.out
+        run: terraform apply -auto-approve -lock=true -refresh=true -var-file${{ inputs.path }}.tfvars plan.out
