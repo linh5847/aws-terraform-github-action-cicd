@@ -11,6 +11,8 @@ on:
   push:
     branches:
       - '*'
+      - '!develop'
+      - '!stage'
       - '!main'
     
   pull_request:
@@ -39,8 +41,8 @@ jobs:
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
   deploy:
-    #if: github.event.pull_request.merged == true
-    if: github.event.review.state == 'approved'
+    if: github.event.pull_request.merged == true && github.event.review.state == 'approved'
+    
     needs: validate-build
     uses: ./.github/workflows/az_tf_apply.yml
     with:
