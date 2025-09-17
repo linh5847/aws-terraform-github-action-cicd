@@ -40,7 +40,7 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.path }}
     env:
-      ###AZURE Client details###
+      ###AWS Provider details###
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
       AWS_DEFAULT_REGION: ${{ secrets.aws_default_region }}
@@ -98,3 +98,30 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars -out plan.out
+
+      # Add a comment to pull requests with plan results
+      - name: Add Plan Comment
+        id: comment
+        uses: actions/github-script@v6
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+        
+            Show Plan
+            
+            \`\`\`${process.env.PLAN}\`\`\`
+            
+            
+            
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })

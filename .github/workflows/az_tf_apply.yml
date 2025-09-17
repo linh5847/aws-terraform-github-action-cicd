@@ -1,0 +1,62 @@
+### Reusable workflow to download terraform artifact built by `az_tf_plan` and apply the artifact/plan ###
+name: "Apply_TF_Plan"
+on:
+  push:
+    branches:
+      - develop
+      - stage
+      - main
+  workflow_call:
+    inputs:
+      path:
+        description: "Specifies the path of the root terraform module."
+        required: true
+        type: string
+      gh_environment:
+        description: "Specifies the GitHub deployment environment."
+        required: false
+        type: string
+        default: null
+    secrets:
+      arm_client_id:
+        description: "Specifies the Azure ARM CLIENT ID."
+        required: true
+      arm_client_secret:
+        description: "Specifies the Azure ARM CLIENT SECRET."
+        required: true
+      arm_subscription_id:
+        description: "Specifies the Azure ARM SUBSCRIPTION ID."
+        required: true
+      arm_tenant_id:
+        description: "Specifies the Azure ARM TENANT ID."
+        required: true
+
+jobs:
+  apply-plan:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.gh_environment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.path }}
+    env:
+      ###AWS Provider details###
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      AWS_DEFAULT_REGION: ${{ secrets.aws_default_region }}
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install the selected version of Terraform CLI 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.12.2" #${{ secrets.terraform_version }}
+
+      # Terraform apply
+      - name: Terraform Apply
+        id: Apply
+        run: terraform apply -auto-approve -lock=true -refresh=true -var-file${{ inouts.path }}.tfvars plan.out

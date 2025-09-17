@@ -14,6 +14,12 @@ on:
       - '!develop'
       - '!stage'
       - '!main'
+    
+  pull_request:
+    branches:
+      - develop
+      - stage
+      - main
 
 jobs:
   validate-build:
@@ -21,9 +27,9 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@feature-config # Required a first feature branch git ref
+    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml
     with:
-      path: dev ## Path to terraform root module (Required)
+      path: dev # Path to terraform root module (Required)
       enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
     secrets:
       aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
