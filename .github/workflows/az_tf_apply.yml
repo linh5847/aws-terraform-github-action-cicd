@@ -27,6 +27,9 @@ on:
       aws_default_region:
         description: "Specifies the AWS_DEFAULT_REGION."
         required: true
+      terraform_version:
+        description: "Specifies the TERRAFORM_VERSION."
+        required: true
 
 jobs:
   apply-plan:
