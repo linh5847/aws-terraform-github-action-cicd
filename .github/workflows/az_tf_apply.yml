@@ -1,11 +1,6 @@
 ### Reusable workflow to download terraform artifact built by `az_tf_plan` and apply the artifact/plan ###
 name: "Apply_TF_Plan"
 on:
-  push:
-    branches:
-      - develop
-      - stage
-      - main
   workflow_call:
     inputs:
       path:
