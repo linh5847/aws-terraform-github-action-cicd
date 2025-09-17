@@ -38,6 +38,7 @@ jobs:
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
   deploy:
+    if: github.event.pull_request.merged == true
     needs: validate-build
     uses: ./.github/workflows/az_tf_apply.yml
     with:
