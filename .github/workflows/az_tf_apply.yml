@@ -25,10 +25,7 @@ on:
       terraform_version:
         description: "Specifies the TERRAFORM_VERSION."
         required: true
-  push:
-    branches:
-      - develop
-      
+  
 jobs:
   apply-plan:
     runs-on: ubuntu-latest
