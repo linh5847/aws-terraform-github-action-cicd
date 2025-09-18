@@ -11,9 +11,9 @@ on:
   push:
     branches:
       - '*'
-      - '!develop'
-      - '!stage'
-      - '!main'
+      - develop
+      - stage
+      - main
     
   pull_request:
     branches:
@@ -21,8 +21,8 @@ on:
       - stage
       - main
 
-  pull_request_review:
-    types: [submitted]
+  # pull_request_review:
+  #   types: [submitted]
 
 jobs:
   validate-build:
