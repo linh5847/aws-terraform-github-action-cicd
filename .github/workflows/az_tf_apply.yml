@@ -51,6 +51,10 @@ jobs:
         with:
           terraform_version: "1.12.2" #${{ secrets.terraform_version }}
 
+      - name: Terraform Init
+        id: init
+        run: terraform init -get=true -input=false -reconfigure
+
       # Terraform apply
       - name: Terraform Apply
         id: Apply
