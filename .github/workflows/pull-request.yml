@@ -42,6 +42,10 @@ jobs:
 
   deploy:
     if: github.event.pull_request.merged == true && github.event.review.state == 'approved'
+<<<<<<< HEAD
+=======
+    
+>>>>>>> f2e03a361dec23e45d3b1526c3eb21cfe398178b
     needs: validate-build
     uses: ./.github/workflows/az_tf_apply.yml
     with:
