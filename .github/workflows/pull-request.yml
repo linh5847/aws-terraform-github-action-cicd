@@ -11,9 +11,9 @@ on:
   push:
     branches:
       - '*'
-      - '!develop'
-      - '!stage'
-      - '!main'
+      - 'develop'
+      - 'stage'
+      - 'main'
     
   pull_request:
     branches:
