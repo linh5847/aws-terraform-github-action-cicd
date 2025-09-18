@@ -79,13 +79,13 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -get=true -input=false -reconfigure
-        working-directory: ${{ inputs.path }}
+        #working-directory: ${{ inputs.path }}
 
       # Run a terraform fmt to check syntax
       - name: Terraform Format
         id: fmt
         run: terraform fmt -recursive -check -diff
-        working-directory: ${{ inputs.path }}
+        #working-directory: ${{ inputs.path }}
 
       # Run a terraform validate
       - name: Terraform Validate
