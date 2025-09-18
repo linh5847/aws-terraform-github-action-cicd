@@ -95,4 +95,4 @@ jobs:
       # Run a terraform plan
       - name: Terraform Plan
         id: plan
-        run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars -out plan.out
+        run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars
