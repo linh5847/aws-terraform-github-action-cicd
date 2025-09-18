@@ -1,0 +1,34 @@
+name: "develop deployment"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+
+jobs:
+  Plan_Dev:
+    permissions: #Permission is required if enabling TFSEC == true
+      actions: read
+      contents: read
+      security-events: write
+    uses: linh5847/azure-terragrunt-terraform-github-action/.github/workflows/az_tf_plan.yml@develop # @development means github branch
+    with:
+      path: dev ## Path to terraform root module (Required)
+      enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
+    secrets:
+      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.DEV_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      terraform_version: ${{ secrets.TERRAFORM_VERSION }}
+
+  Deploy_Dev:
+    needs: Plan_Dev
+    uses: linh5847/azure-terragrunt-terraform-github-action/.github/workflows/az_tf_apply.yml@develop
+    with:
+      path: dev ## Path to terraform root module (Required)
+      gh_environment: dev ## GH Environment. Default=null - (Optional)
+    secrets:
+      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.DEV_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      terraform_version: ${{ secrets.TERRAFORM_VERSION }}
