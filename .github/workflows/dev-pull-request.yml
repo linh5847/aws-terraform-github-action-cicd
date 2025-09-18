@@ -18,8 +18,6 @@ on:
   pull_request:
     branches:
       - develop
-      - stage
-      - main
 
   # pull_request_review:
   #   types: [submitted]
