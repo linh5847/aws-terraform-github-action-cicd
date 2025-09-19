@@ -87,10 +87,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: tfsec
-        uses: aquasecurity/tfsec-sarif-action@v0.1.0
+      - name: Terraform security scan
+        uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          sarif_file: tfsec.sarif
+          format: json
 
       # - name: Upload SARIF file
       #   uses: github/codeql-action/upload-sarif@v3
@@ -104,10 +104,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Terraform security scan
-        uses: aquasecurity/tfsec-action@v1.0.0
-        with:
-          format: json
+      - name: tfsec check
+        run: tfsec .
 
       # checkov-checks checkout Repository
       - name : Check out Git Repository
