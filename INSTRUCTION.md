@@ -28,7 +28,19 @@ DEV_AWS_SECRET_ACCESS_KEY
 DEV_AWS_DEFAULT_REGION
 ```
 
-## CI/CD Operation
+### 2.2 Create GitHub Environment
+https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments#creating-an-environment
+
+setting->Environments->New environment
+
+```
+dev
+stage
+prod
+```
+<img title="GitHub Environment" alt="Alt text" src="/images/envc.png">
+
+## 3. CI/CD Operation
 
 #### Git Feature Branch Push and GitHub Pull Request Created.
 Follow the rules of thumb by creating a git feature branch. Add files, commit and push to the git server as a first step. Login to the GitHub console under your own account and click on **Action** to view the current feature branch CI/CD running.
