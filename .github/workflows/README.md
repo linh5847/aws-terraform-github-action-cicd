@@ -23,7 +23,7 @@ cp -pr dev-merge-deploy.yml merge-deploy.yml
 This will ensure the code will get deploy to the DEVELOPMENT ENVIRONMENT only.
 ```
 
-WHen the file has been added and submit to the local git feature branch and it is ready to first push the git feature branch to the git server remotely. Makes a reasonable comment during the git commit and push to git server ready for requesting for a reviewed.
+When the file has been added and submit to the local git feature branch and it is ready to first push the git feature branch to the git server remotely. Makes a reasonable comment during the git commit and push to the git server ready for requesting the colleagues to do the reviewed.
 
-The GitHub Action CI/CD design with 2 main files **pull-request.yml** and **merge-deploy.yml**. These two files are copying from ie **dev-pull-request.yml** and **dev-merge-deploy.yml** and we want to keep this format without editing anything related to the GitHub Action YAML files until further noticed. This is to compliance with multi branches situation.
+The GitHub Action CI/CD design with 2 main files **pull-request.yml** and **merge-deploy.yml**. These two files are copying from ie **dev-pull-request.yml** and **dev-merge-deploy.yml** and we want to keep this format without editing anything related to the **GitHub Action CI/CD YAML** files until further noticed. This is to compliance with multi branches situation.
 
