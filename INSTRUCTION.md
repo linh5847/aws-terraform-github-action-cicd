@@ -45,4 +45,8 @@ Step3. As soon as you **Merge** a **Pull Request** to particular git branch ie *
 #### GitHub Merge Pull Request To The Standard Git Branch
 On the GitHub Action CI/CD screen. When you see the ie **Deploy_Dev/Plan_Dev** in a browse colour. You need to click on this button, as it is waiting for approval to be deployed. This option come from the GitHub Environment with review required option when creating an environment.
 
-<img title="Git Mrge" alt="Alt text" src="/images/git-merge-click.png">
+<img title="Git Merge" alt="Alt text" src="/images/git-merge-click.png">
+
+The above image shows user to click on the deploy option for review with option which will lead to the next instruction
+
+<img title="Review deployment" alt="Alt text" src="/images/reject-or-approve.png">
