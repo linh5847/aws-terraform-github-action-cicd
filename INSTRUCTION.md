@@ -40,6 +40,9 @@ prod
 ```
 <img title="GitHub Environment" alt="Alt text" src="/images/env.png">
 
+Add branch or tag and rule to each environment.
+<img title="GitHub Environment details" alt="Alt text" src="/images/env-details.png">
+
 ## 3. CI/CD Operation
 
 #### Git Feature Branch Push and GitHub Pull Request Created.
