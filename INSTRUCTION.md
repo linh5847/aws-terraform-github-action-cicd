@@ -38,7 +38,7 @@ dev
 stage
 prod
 ```
-<img title="GitHub Environment" alt="Alt text" src="/images/envc.png">
+<img title="GitHub Environment" alt="Alt text" src="/images/env.png">
 
 ## 3. CI/CD Operation
 
