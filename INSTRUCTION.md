@@ -71,3 +71,32 @@ AWS reviewing after the deployment.
 
 <img title="after deployment" alt="Alt text" src="/images/after-deployment.png">
 
+#### Others
+All images below are considering as part of creating pull request and merge into the standard git branch. Users may wondering why it is below the deploy. This is purely for knowledge base only.
+
+compare & pull request
+<img title="Compare && Pull request" alt="Alt text" src="/images/git-compare-pull-request.png">
+
+select standard git branch ie **develop** or **stage** or **main**
+<img title="Select Standard Git Branch" alt="Alt text" src="/images/select-git-branch.png">
+
+create a pull request
+<img title="Create pull request" alt="Alt text" src="/images/create-pull-request.png">
+
+ready to merge into particular git standard branch
+<img title="Ready to merge" alt="Alt text" src="/images/ready-to-merge.png">
+
+confirm merge to git branch
+<img title="Confirm merge" alt="Alt text" src="/images/confirm-merge.png">
+
+stage deployment
+<img title="stage deployment" alt="Alt text" src="/images/stage-deployment.png">
+
+CI/CD for stage environment
+<img title="stage environment" alt="Alt text" src="/images/stage-environment.png">
+
+AWS View
+<img title="VPC" alt="Alt text" src="/images/VPC.png">
+
+Custom VPC Name
+<img title="VPC Name" alt="Alt text" src="/images/VPC-name.png">
