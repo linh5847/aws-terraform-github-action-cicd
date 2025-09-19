@@ -27,3 +27,22 @@ DEV_AWS_ACCESS_KEY_ID
 DEV_AWS_SECRET_ACCESS_KEY
 DEV_AWS_DEFAULT_REGION
 ```
+
+## CI/CD Operation
+
+#### Git Feature Branch Push and GitHub Pull Request Created.
+Follow the rules of thumb by creating a git feature branch. Add files, commit and push to the git server as a first step. Login to the GitHub console under your own account and click on **Action** to view the current feature branch CI/CD running.
+
+<img title="Git Feature Branch" alt="Alt text" src="/images/git-feature-branch.png">
+The above image shown 3 steps. 
+
+Step1. As soon as you push the git feature branch to git server. The GitHub Action CI/CD pipeline will execute and running.
+
+Step2. As soon as you create a **Pull Request**. The GitHub Action CI/CD will execute and run again.
+
+Step3. As soon as you **Merge** a **Pull Request** to particular git branch ie **develop**. The GitHub Action CI/CD will call both Terraform Plan and Apply and deploy the infrastructure to AWS cloud.
+
+#### GitHub Merge Pull Request To The Standard Git Branch
+On the GitHub Action CI/CD screen. When you see the ie **Deploy_Dev/Plan_Dev** in a browse colour. You need to click on this button, as it is waiting for approval to be deployed. This option come from the GitHub Environment with review required option when creating an environment.
+
+<img title="Git Mrge" alt="Alt text" src="/images/git-merge-click.png">
