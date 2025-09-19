@@ -100,3 +100,6 @@ AWS View
 
 Custom VPC Name
 <img title="VPC Name" alt="Alt text" src="/images/VPC-name.png">
+
+Prod deployment
+<img title="Prod deployment" alt="Alt text" src="/images/prod-deployment.png">
