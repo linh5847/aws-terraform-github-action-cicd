@@ -49,4 +49,8 @@ On the GitHub Action CI/CD screen. When you see the ie **Deploy_Dev/Plan_Dev** i
 
 The above image shows user to click on the deploy option for review with option which will lead to the next instruction
 
-<img title="Review deployment" alt="Alt text" src="/images/reject-or-approve.png">
+<img title="Review deployment" alt="Alt text" src="/images/review-pending-deployment.png">
+
+As soon as you click on the **Review pending deployment**. It will lead you to select **Reject** or **Approve for deployment**. In theory, the code has been reviewed and approved, as well as merge into the particular environment git branch ready to deploy. You will likely click on **Approve for deployment** unless the circumstance has changed at the last second before the button being click when pairing with a buddy or someone higher ranking. The **Reject** button will be selected and the deployment will get cancelled.
+
+<img title="Reject or Approve" alt="Alt text" src="/images/reject-or-approve.png">
