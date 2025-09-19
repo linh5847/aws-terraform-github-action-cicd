@@ -105,7 +105,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: tfsec check
-        run: tfsec .
+        run: |
+          docker run --rm -it -v "$(pwd)" aquasec/tfsec .
 
       # checkov-checks checkout Repository
       - name : Check out Git Repository
