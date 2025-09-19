@@ -4,8 +4,6 @@ additional_tags = {
   Service       = "IaC"
 }
 
-environment = "dev"
-
 config = {
   vpc = {
     enabled  = true
