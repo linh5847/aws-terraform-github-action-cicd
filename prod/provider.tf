@@ -4,7 +4,7 @@ terraform {
     region       = "eu-west-2"
     use_lockfile = true
     encrypt      = true
-    key          = "dev/eks/terraform.tfstate"
+    key          = "prod/eks/terraform.tfstate"
   }
 
   required_providers {

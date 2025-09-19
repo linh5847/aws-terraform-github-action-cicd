@@ -7,7 +7,7 @@ variable "additional_tags" {
 variable "environment" {
   description = "specifies an environment name"
   type        = string
-  default     = "dev"
+  default     = ""
 }
 
 variable "config" {
