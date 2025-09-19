@@ -51,7 +51,11 @@ jobs:
         with:
           terraform_version: "1.12.2" #${{ secrets.terraform_version }}
 
+      - name: Terraform Init
+        id: init
+        run: terraform init -get=true -input=false -reconfigure
+
       # Terraform apply
       - name: Terraform Apply
         id: Apply
-        run: terraform apply -auto-approve -lock=true -refresh=true -var-file${{ inputs.path }}.tfvars plan.out
+        run: terraform apply -auto-approve -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars

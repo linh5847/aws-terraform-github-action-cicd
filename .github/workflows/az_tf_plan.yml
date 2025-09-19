@@ -79,13 +79,11 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -get=true -input=false -reconfigure
-        #working-directory: ${{ inputs.path }}
 
       # Run a terraform fmt to check syntax
       - name: Terraform Format
         id: fmt
         run: terraform fmt -recursive -check -diff
-        #working-directory: ${{ inputs.path }}
 
       # Run a terraform validate
       - name: Terraform Validate
@@ -97,6 +95,4 @@ jobs:
       # Run a terraform plan
       - name: Terraform Plan
         id: plan
-        run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars -out plan.out
-
-      
+        run: terraform plan -lock=true -refresh=true -var-file=${{ inputs.path }}.tfvars

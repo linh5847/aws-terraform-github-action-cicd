@@ -1,0 +1,35 @@
+name: "stage deployment"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - stage
+
+jobs:
+  Plan_Stage:
+    permissions: #Permission is required if enabling TFSEC == true
+      actions: read
+      contents: read
+      security-events: write
+    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@stage # @stage means github branch
+    uses: ./.github/workflows/az_tf_plan.yml
+    with:
+      path: stage ## Path to terraform root module (Required)
+      enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
+    secrets:
+      aws_access_key_id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.STAGE_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.STAGE_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      terraform_version: ${{ secrets.TERRAFORM_VERSION }}
+
+  Deploy_Stage:
+    needs: Plan_Stage
+    uses: ./.github/workflows/az_tf_apply.yml
+    with:
+      path: stage ## Path to terraform root module (Required)
+      gh_environment: stage ## GH Environment. Default=null - (Optional)
+    secrets:
+      aws_access_key_id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.STAGE_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.STAGE_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      terraform_version: ${{ secrets.TERRAFORM_VERSION }}
