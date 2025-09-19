@@ -11,7 +11,8 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@develop # @development means github branch
+    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@develop # @development means github branch
+    uses: ./.github/workflows/az_tf_plan.yml
     with:
       path: dev ## Path to terraform root module (Required)
       enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
@@ -23,7 +24,7 @@ jobs:
 
   Deploy_Dev:
     needs: Plan_Dev
-    uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_apply.yml@develop
+    uses: ./.github/workflows/az_tf_apply.yml
     with:
       path: dev ## Path to terraform root module (Required)
       gh_environment: dev ## GH Environment. Default=null - (Optional)
