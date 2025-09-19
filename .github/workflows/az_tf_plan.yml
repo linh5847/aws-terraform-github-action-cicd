@@ -83,7 +83,7 @@ jobs:
 
       # TFSec Checkout Repository
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
         with:
           persist-credentials: false
 
@@ -93,7 +93,7 @@ jobs:
           sarif_file: tfsec.sarif
 
       - name: Terraform security scan
-        uses: triat/terraform-security-scan@v3.0.0
+        uses: triat/terraform-security-scan@v0.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -102,6 +102,17 @@ jobs:
       #   with:
       #     # Path to SARIF file relative to the root of the repository
       #     sarif_file: tfsec.sarif
+
+      - name: Pull Request Commenter
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform security scan
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          format: json
 
       # checkov-checks checkout Repository
       - name : Check out Git Repository
