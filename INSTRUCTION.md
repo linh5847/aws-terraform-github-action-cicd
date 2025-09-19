@@ -54,3 +54,20 @@ The above image shows user to click on the deploy option for review with option 
 As soon as you click on the **Review pending deployment**. It will lead you to select **Reject** or **Approve for deployment**. In theory, the code has been reviewed and approved, as well as merge into the particular environment git branch ready to deploy. You will likely click on **Approve for deployment** unless the circumstance has changed at the last second before the button being click when pairing with a buddy or someone higher ranking. The **Reject** button will be selected and the deployment will get cancelled.
 
 <img title="Reject or Approve" alt="Alt text" src="/images/reject-or-approve.png">
+
+We can login the AWS console and review before the deployment and in my case the intension of this deployment is to create an **AWS custom VPC** and **Internet-Gateway**.
+
+<img title="before deployment" alt="Alt text" src="/images/before-deployment.png">
+
+Once, the GitHub Action CI/CD **Approve for deployment** button is click. It starts executing the Terraform code and deploy into AWS cloud.
+
+<img title="deployment progression" alt="Alt text" src="/images/deploy-progress.png">
+
+When the CI/CD pipeline is completed with a deployment successfully. We can check both the AWS console to see a new deployment is applying correctly.
+
+<img title="deploy successful" alt="Alt text" src="/images/deploy-successful.png">
+
+AWS reviewing after the deployment.
+
+<img title="after deployment" alt="Alt text" src="/images/after-deployment.png">
+
