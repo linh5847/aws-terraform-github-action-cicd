@@ -1,5 +1,7 @@
 The IaC GitHub Action CI/CD pipeline design for multiple branches and multiple environments. There is one Git default branch only when we first create the Git repository. Other branches are created as part of requirements to suit the need of blue-green application deployment purposes. However, there will come with some confusion along and care must considered during the operation.
 
+Corporation Register and Operate the AWS cloud with multiple registration account. One for each environment and also demanding for multiple branches. Git branches is an optional and if we don't even want to merge ie **develop** to **main** which is a default git branch. This is where care must be considered.
+
 #### Standard Branches
 ```
 develop
