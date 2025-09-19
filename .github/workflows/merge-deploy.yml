@@ -1,35 +1,35 @@
-name: "stage deployment"
+name: "production deployment"
 on:
   workflow_dispatch:
   push:
     branches:
-      - stage
+      - main
 
 jobs:
-  Plan_Stage:
+  Plan_Prod:
     permissions: #Permission is required if enabling TFSEC == true
       actions: read
       contents: read
       security-events: write
-    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@stage # @stage means github branch
+    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@main # @main means github branch
     uses: ./.github/workflows/az_tf_plan.yml
     with:
-      path: stage ## Path to terraform root module (Required)
+      path: prod ## Path to terraform root module (Required)
       enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
     secrets:
-      aws_access_key_id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
-      aws_secret_access_key: ${{ secrets.STAGE_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
-      aws_default_region: ${{ secrets.STAGE_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      aws_access_key_id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.PROD_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
-  Deploy_Stage:
-    needs: Plan_Stage
+  Deploy_Prod:
+    needs: Plan_Prod
     uses: ./.github/workflows/az_tf_apply.yml
     with:
-      path: stage ## Path to terraform root module (Required)
-      gh_environment: stage ## GH Environment. Default=null - (Optional)
+      path: prod ## Path to terraform root module (Required)
+      gh_environment: prod ## GH Environment. Default=null - (Optional)
     secrets:
-      aws_access_key_id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
-      aws_secret_access_key: ${{ secrets.STAGE_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
-      aws_default_region: ${{ secrets.STAGE_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      aws_access_key_id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.PROD_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
