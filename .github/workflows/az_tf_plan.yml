@@ -106,7 +106,7 @@ jobs:
 
       - name: tfsec check
         run: |
-          docker run --rm -it -v "$(pwd)" aquasec/tfsec .
+          docker run --rm -it -v "$(pwd):/" aquasec/tfsec /
 
       # checkov-checks checkout Repository
       - name : Check out Git Repository
