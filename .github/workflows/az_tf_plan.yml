@@ -95,16 +95,16 @@ jobs:
           # Path to SARIF file relative to the root of the repository
           sarif_file: tfsec.sarif
 
-       # checkov-checks checkout Repository
-        - name : Check out Git Repository
-          uses: actions/checkout@v2
-        
-        # Checkov - Prevent cloud misconfigurations and find vulnerabilities during build-time in infrastructure as code
-        - name: Run Checkov
-          run: |
-            docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
+      # checkov-checks checkout Repository
+      - name : Check out Git Repository
+        uses: actions/checkout@v2
+      
+      # Checkov - Prevent cloud misconfigurations and find vulnerabilities during build-time in infrastructure as code
+      - name: Run Checkov
+        run: |
+          docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
 
-      # Checkout the repository to the GitHub Actions runner
+      # Terraform checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
 
