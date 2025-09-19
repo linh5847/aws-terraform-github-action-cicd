@@ -8,7 +8,6 @@
 
 #checkov:skip:CKV2_GHA_1:Comment
 name: "Push to Feature Branch"
-permissions: read-all
 on:
   workflow_dispatch:
   push:
