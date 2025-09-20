@@ -17,10 +17,10 @@ git fetch --all
 git pull --all
 git checkout -b jw-infra-255
 
-If the first deployment into say the DEVELOPMENT ENVIRONMENT. You need to copy the GitHub Action CI/CD YAML file from that environment to the files that drive the CI/CD as followed.
+If the first deployment into say the DEVELOPMENT ENVIRONMENT. You need to copy the GitHub Action CI/CD YAML file from that environment to the files that run the CI/CD as followed.
 
-cp -pr dev-pull-request.yml pull-request.yml
-cp -pr dev-merge-deploy.yml merge-deploy.yml
+cp -pr dev-pull-request.yml.ORIG pull-request.yml
+cp -pr dev-merge-deploy.yml.ORIG merge-deploy.yml
 
 This will ensure the code will get deploy to the DEVELOPMENT ENVIRONMENT only.
 ```

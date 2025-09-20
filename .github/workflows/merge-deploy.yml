@@ -1,4 +1,5 @@
 name: "develop deployment"
+permissions: read-all
 on:
   workflow_dispatch:
   push:

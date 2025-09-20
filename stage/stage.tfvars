@@ -4,8 +4,6 @@ additional_tags = {
   Service       = "IaC"
 }
 
-environment = "stage"
-
 config = {
   vpc = {
     enabled  = true

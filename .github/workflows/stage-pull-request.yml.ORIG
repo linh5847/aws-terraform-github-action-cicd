@@ -6,6 +6,7 @@
 ### one of above ie dev                            ###
 ######################################################
 name: "Push to Feature Branch"
+permissions: read-all
 on:
   workflow_dispatch:
   push:
@@ -24,10 +25,6 @@ on:
 
 jobs:
   validate-build:
-    permissions: #Permission is required if enabling TFSEC == true
-      actions: read
-      contents: read
-      security-events: write
     uses: ./.github/workflows/az_tf_plan.yml
     with:
       path: stage # Path to terraform root module (Required)

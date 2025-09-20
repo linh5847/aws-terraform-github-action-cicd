@@ -4,12 +4,6 @@ variable "additional_tags" {
   default     = {}
 }
 
-variable "environment" {
-  description = "specifies an environment name"
-  type        = string
-  default     = ""
-}
-
 variable "config" {
   type = object({
     vpc = object({

@@ -1,4 +1,5 @@
 name: "stage deployment"
+permissions: read-all
 on:
   workflow_dispatch:
   push:
