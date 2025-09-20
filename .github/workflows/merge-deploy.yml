@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 name: "production deployment"
+=======
+name: "develop deployment"
+permissions: read-all
+>>>>>>> 38bf508631bd28aaaef2355b9ac206fee9d9064a
 on:
   workflow_dispatch:
   push:
@@ -6,12 +11,17 @@ on:
       - main
 
 jobs:
+<<<<<<< HEAD
   Plan_Prod:
     permissions: #Permission is required if enabling TFSEC == true
       actions: read
       contents: read
       security-events: write
     #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@main # @main means github branch
+=======
+  Plan_Dev:
+    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@develop # @development means github branch
+>>>>>>> 38bf508631bd28aaaef2355b9ac206fee9d9064a
     uses: ./.github/workflows/az_tf_plan.yml
     with:
       path: prod ## Path to terraform root module (Required)

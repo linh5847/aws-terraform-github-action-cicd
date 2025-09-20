@@ -1,5 +1,6 @@
 ### Reusable workflow to plan terraform deployment, create artifact and upload to workflow artifacts for consumption ###
 name: "Build_TF_Plan"
+permissions: read-all
 on:
   workflow_call:
     inputs:
@@ -50,23 +51,73 @@ jobs:
     #     environment: [dev, stage, prod]
 
     steps:
+      # TFLint Checkout Repository
+      - name : Check out Git Repository
+        uses: actions/checkout@v3  
+        
+      - uses: terraform-linters/setup-tflint@v2
+        name: Setup TFLint
+        with:
+          github_token: ${{ secrets.CI_GITHUB_TOKEN }}
+          
+      # Print TFLint version
+      - name: Show version
+        run: tflint --version
+        
+      # Install plugins
+      - name: Init TFLint
+        run: tflint --init
+
+    # TFLint - Terraform Check
+      - uses: actions/cache@v4
+        name: Cache plugin dir
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+        
+      # Run tflint command in each directory recursively # use --force if you want to continue with workflow although errors are there
+      - name: Run TFLint
+        run: tflint -f compact --recursive
+
+      # TFSec Checkout Repository
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
         with:
           persist-credentials: false
 
-      - name: tfsec
-        uses: aquasecurity/tfsec-sarif-action@v0.1.0
+      - name: tfsec Terraform security scan
+        uses: tfsec/tfsec-sarif-action@v0.1.0 #aquasecurity/tfsec-action@v1.0.0
         with:
-          sarif_file: tfsec.sarif          
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          # Path to SARIF file relative to the root of the repository
+          format: json
           sarif_file: tfsec.sarif
+          github_token: ${{ secrets.GITHUB_TOKEN }}  
 
-      # Checkout the repository to the GitHub Actions runner
+      # - name: Upload SARIF file
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     # Path to SARIF file relative to the root of the repository
+      #     sarif_file: tfsec.sarif
+
+      - name: Pull Request Commenter
+        if: ${{ github.event_name == 'pull_request' }} 
+        uses: tfsec/tfsec-pr-commenter-action@main #aquasecurity/tfsec-pr-commenter-action@v1.0.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: tfsec scan result
+        run: |
+          docker run -t -v "$(pwd)" aquasec/tfsec ${{ inputs.path }} --format json
+
+      # checkov-checks checkout Repository
+      - name : Check out Git Repository
+        uses: actions/checkout@v2
+      
+      # Checkov - Prevent cloud misconfigurations and find vulnerabilities during build-time in infrastructure as code
+      - name: Run Checkov
+        run: |
+          docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
+
+      # Terraform checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
 
