@@ -91,7 +91,7 @@ jobs:
           format: json
 
       - name: tfsec
-        uses: tfsec/tfsec-sarif-action@main
+        uses: tfsec/tfsec-sarif-action@v0.1.0
         with:
           sarif_file: tfsec.sarif
           github_token: ${{ secrets.GITHUB_TOKEN }}   
