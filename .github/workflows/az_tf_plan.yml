@@ -1,6 +1,4 @@
 ### Reusable workflow to plan terraform deployment, create artifact and upload to workflow artifacts for consumption ###
-
-#checkov:skip:CKV2_GHA_1:Comment
 name: "Build_TF_Plan"
 permissions: read-all
 on:
@@ -104,7 +102,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: tfsec check
+      - name: tfsec scan result
         run: |
           docker run -t -v "$(pwd)" aquasec/tfsec ${{ inputs.path }}
 

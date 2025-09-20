@@ -1,4 +1,3 @@
-#checkov:skip:CKV2_GHA_1:Comment
 name: "production deployment"
 permissions: read-all
 on:
