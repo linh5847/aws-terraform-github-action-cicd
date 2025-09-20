@@ -55,13 +55,6 @@ jobs:
       - name : Check out Git Repository
         uses: actions/checkout@v3  
         
-      # TFLint - Terraform Check
-      - uses: actions/cache@v4
-        name: Cache plugin dir
-        with:
-          path: ~/.tflint.d/plugins
-          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
-
       - uses: terraform-linters/setup-tflint@v2
         name: Setup TFLint
         with:
@@ -74,6 +67,13 @@ jobs:
       # Install plugins
       - name: Init TFLint
         run: tflint --init
+
+    # TFLint - Terraform Check
+      - uses: actions/cache@v4
+        name: Cache plugin dir
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
         
       # Run tflint command in each directory recursively # use --force if you want to continue with workflow although errors are there
       - name: Run TFLint
