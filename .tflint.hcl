@@ -86,8 +86,6 @@ data {
   format = "none"
 }
  
-}
- 
 # Disallow terraform declarations without require_version.
 rule "terraform_required_version" {
   enabled = true
