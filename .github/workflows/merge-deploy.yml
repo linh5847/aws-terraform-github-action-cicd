@@ -1,45 +1,32 @@
-<<<<<<< HEAD
-name: "production deployment"
-=======
 name: "develop deployment"
 permissions: read-all
->>>>>>> 38bf508631bd28aaaef2355b9ac206fee9d9064a
 on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
-<<<<<<< HEAD
-  Plan_Prod:
-    permissions: #Permission is required if enabling TFSEC == true
-      actions: read
-      contents: read
-      security-events: write
-    #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@main # @main means github branch
-=======
   Plan_Dev:
     #uses: linh5847/aws-terraform-github-action-cicd/.github/workflows/az_tf_plan.yml@develop # @development means github branch
->>>>>>> 38bf508631bd28aaaef2355b9ac206fee9d9064a
     uses: ./.github/workflows/az_tf_plan.yml
     with:
-      path: prod ## Path to terraform root module (Required)
+      path: dev ## Path to terraform root module (Required)
       enable_TFSEC: true ## (Optional)  Enable TFSEC IaC scans (Private repo requires GitHub enterprise)
     secrets:
-      aws_access_key_id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
-      aws_secret_access_key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
-      aws_default_region: ${{ secrets.PROD_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.DEV_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
-  Deploy_Prod:
-    needs: Plan_Prod
+  Deploy_Dev:
+    needs: Plan_Dev
     uses: ./.github/workflows/az_tf_apply.yml
     with:
-      path: prod ## Path to terraform root module (Required)
-      gh_environment: prod ## GH Environment. Default=null - (Optional)
+      path: dev ## Path to terraform root module (Required)
+      gh_environment: dev ## GH Environment. Default=null - (Optional)
     secrets:
-      aws_access_key_id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
-      aws_secret_access_key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
-      aws_default_region: ${{ secrets.PROD_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
+      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} ## AWS_ACCESS_KEY_ID
+      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} ## AWS_SECRET_ACCESS_KEY
+      aws_default_region: ${{ secrets.DEV_AWS_DEFAULT_REGION }} ## AWS_DEFAULT_REGION
       terraform_version: ${{ secrets.TERRAFORM_VERSION }}
